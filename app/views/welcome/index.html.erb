@@ -1,0 +1,87 @@
+<h1>
+    Pomodoro Clock
+</h1>
+<div id="buttons">
+    <img width="300px;" height="auto" src="http://www.clker.com/cliparts/j/U/O/s/B/6/tomato.svg">
+    <h2 id="mode">Click Button to Begin</h2>
+    <p id="timer">00:00</p>
+    <button onclick="begin(1500,'Work')" id="reset">Begin</button>
+    <button id="pauseBtn">Pause</button>
+    <hr>
+    <p style="font-size: 15px;">Quit procrastinating! Let the Pomodoro clock method help. Simply work for 25 minutes straight then reward yourself with 5 minutes of relaxing. This method has been found to be more productive and useful than burning yourself out trying to work for hours straight.</p>
+</div>
+<script type="text/javascript">
+    var b = document.getElementById("timer");
+    var c = document.getElementById("reset");
+    var q = document.getElementById("mode");
+    var p = document.getElementById("pauseBtn");
+    var beginTime;
+    var flag = 1;
+    
+    p.addEventListener("click", ()=>{
+        if(flag == 1){
+            p.style.background = "#F0EEA6";
+            flag = 0;
+            p.innerHTML = "Resume";
+        }
+        else{
+            p.style.background ="#69c893";
+            flag = 1;
+            p.innerHTML = "Pause";
+        }
+    });
+    
+    function begin(amount, word){
+        document.title = "Working...";
+        p.innerHTML = "Pause";
+        flag = 1;
+        c.innerHTML = "Reset";
+        q.innerHTML = word;
+        var timeRemain = amount;
+        var mode = word;
+        clearInterval(beginTime);
+        b.innerHTML = clockUpdate(timeRemain);
+       
+            beginTime = setInterval(()=>{
+                    if(timeRemain == 0){
+                        clearInterval(beginTime);
+                        if(mode == "Relax"){
+                        begin(1500, 'Work');
+                        }
+                        else{
+                        document.title = "Relax";
+                        begin(300, 'Relax');
+                        }
+                    }else{
+                        if(flag == 1){
+                           timeRemain -= 1;
+                            b.innerHTML = clockUpdate(timeRemain);          
+                        }
+                        }        
+                
+            
+        }, 1000);    
+        
+        
+    }
+    function clockUpdate(t){
+        var minutes = Math.floor(t/60);
+        var seconds = t % 60;
+        if(minutes < 10){
+            if(seconds > 9){
+                return "0"+minutes+":"+seconds;    
+            }
+            else{
+                return "0"+minutes+":0"+seconds;
+            }
+        }
+        else{
+            if(seconds > 9){
+                return minutes+":"+seconds;    
+            }
+            else{
+                return minutes+":0"+seconds;
+            }
+        }
+    }
+</script>
